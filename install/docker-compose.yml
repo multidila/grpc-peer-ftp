@@ -1,0 +1,84 @@
+services:
+  tracker:
+    build:
+      context: ..
+      dockerfile: tracker/Dockerfile
+    ports:
+      - "50050:50050"
+    environment:
+      PORT: "50050"
+      HEARTBEAT_TIMEOUT_MS: "15000"
+
+  file-server-1:
+    build:
+      context: ..
+      dockerfile: file-server/Dockerfile
+    ports:
+      - "50101:50101"
+    volumes:
+      - ../test-data/peer1-shared:/build/file-server/shared
+    environment:
+      PEER_ID: "file-server-1"
+      PEER_PORT: "50101"
+      PEER_HOST: "file-server-1"
+      TRACKER_ADDR: "tracker:50050"
+      SHARED_DIR: "/build/file-server/shared"
+      CHUNK_SIZE_KB: "64"
+      HEARTBEAT_INTERVAL_MS: "5000"
+    depends_on:
+      - tracker
+
+  file-server-2:
+    build:
+      context: ..
+      dockerfile: file-server/Dockerfile
+    ports:
+      - "50102:50102"
+    volumes:
+      - ../test-data/peer2-shared:/build/file-server/shared
+    environment:
+      PEER_ID: "file-server-2"
+      PEER_PORT: "50102"
+      PEER_HOST: "file-server-2"
+      TRACKER_ADDR: "tracker:50050"
+      SHARED_DIR: "/build/file-server/shared"
+      CHUNK_SIZE_KB: "64"
+      HEARTBEAT_INTERVAL_MS: "5000"
+    depends_on:
+      - tracker
+
+  file-server-3:
+    build:
+      context: ..
+      dockerfile: file-server/Dockerfile
+    ports:
+      - "50103:50103"
+    volumes:
+      - ../test-data/peer3-shared:/build/file-server/shared
+    environment:
+      PEER_ID: "file-server-3"
+      PEER_PORT: "50103"
+      PEER_HOST: "file-server-3"
+      TRACKER_ADDR: "tracker:50050"
+      SHARED_DIR: "/build/file-server/shared"
+      CHUNK_SIZE_KB: "64"
+      HEARTBEAT_INTERVAL_MS: "5000"
+    depends_on:
+      - tracker
+
+  file-client:
+    build:
+      context: ..
+      dockerfile: file-client/Dockerfile
+    volumes:
+      - ../test-data/client-downloads:/build/file-client/downloads
+    environment:
+      TRACKER_ADDR: "tracker:50050"
+      DOWNLOAD_DIR: "/build/file-client/downloads"
+    depends_on:
+      - tracker
+      - file-server-1
+      - file-server-2
+      - file-server-3
+    stdin_open: true
+    tty: true

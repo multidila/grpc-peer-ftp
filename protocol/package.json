@@ -1,0 +1,16 @@
+{
+  "name": "protocol",
+  "version": "1.0.0",
+  "description": "Shared protocol definitions, types, and utilities",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.12.5",
+    "@grpc/proto-loader": "^0.7.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

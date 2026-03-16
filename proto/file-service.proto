@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package fileservice;
+
+message FileMetadata {
+  string file_id            = 1;
+  string file_name          = 2;
+  int64  file_size          = 3;
+  string file_hash          = 4;
+  int32  chunk_size         = 5;
+  int32  chunk_count        = 6;
+  repeated string chunk_hashes = 7;
+}
+
+message GetFileListRequest {}
+
+message GetFileListResponse {
+  repeated FileMetadata files = 1;
+}
+
+message GetFileMetadataRequest {
+  string file_id = 1;
+}
+
+message GetFileMetadataResponse {
+  FileMetadata metadata = 1;
+}
+
+message GetChunkRequest {
+  string file_id     = 1;
+  int32  chunk_index = 2;
+}
+
+message GetChunkResponse {
+  int32  chunk_index = 1;
+  bytes  data        = 2;
+  string chunk_hash  = 3;
+}
+
+service FileService {
+  rpc GetFileList     (GetFileListRequest)     returns (GetFileListResponse);
+  rpc GetFileMetadata (GetFileMetadataRequest) returns (GetFileMetadataResponse);
+  rpc GetChunk        (GetChunkRequest)        returns (GetChunkResponse);
+}

@@ -1,0 +1,1 @@
+This is a shared test file available on peer-1 and peer-2.
