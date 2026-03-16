@@ -11,11 +11,12 @@
     "@grpc/grpc-js": "^1.12.5",
     "protocol": "file:../protocol",
     "cli-table3": "^0.6.5",
-    "inquirer": "^13.3.0",
+    "inquirer": "^9.3.7",
     "pretty-bytes": "^6.1.1",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.7",
     "@types/yargs": "^17.0.33",
     "typescript": "^5.7.3"
   }
